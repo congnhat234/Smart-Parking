@@ -14,8 +14,8 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity {
     ListView simpleList;
-    String List[] = {"Slot 1", "Slot 2", "Slot 3"};
-    int flags[] = {R.drawable.car, R.drawable.greencar, R.drawable.redcar};
+    String List[] = {"Slot 1", "Slot 2", "Slot 3","Slot 4"};
+    int flags[] = {R.drawable.car, R.drawable.greencar, R.drawable.redcar, R.drawable.car};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
