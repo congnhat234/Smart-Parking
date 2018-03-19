@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.firebase.database.ChildEventListener;
@@ -13,15 +12,26 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
-    ListView lvData;
+    ListView simpleList;
+    String List[] = {"Slot 1", "Slot 2", "Slot 3","Slot 4"};
+    int flags[] = {R.drawable.car, R.drawable.greencar, R.drawable.redcar, R.drawable.car};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        lvData = (ListView) findViewById(R.id.lvData);
+
+        simpleList = (ListView) findViewById(R.id.lv);
+        final CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), List, flags);
+        simpleList.setAdapter(customAdapter);
+        simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                flags[i] = R.drawable.redcar;
+                customAdapter.notifyDataSetChanged();
+            }
+        });
 
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -43,33 +53,33 @@ public class MainActivity extends AppCompatActivity {
 //        }
 
         // Cấu hình ListView
-        final ArrayList<String> name = new ArrayList<String>();
-        final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, name);
-        lvData.setAdapter(adapter);
-
-
-        lvData.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-            }
-        });
+//        final ArrayList<String> name = new ArrayList<String>();
+//        final ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, name);
+//        lvData.setAdapter(adapter);
+//
+//
+//        lvData.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//
+//            }
+//        });
 
 
         // Read from the database
         myRef.child("Devpro").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                name.add(dataSnapshot.getValue().toString());
-
-                adapter.notifyDataSetChanged();
+//                name.add(dataSnapshot.getValue().toString());
+//
+//                adapter.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                name.add(dataSnapshot.getValue().toString());
-                name.add("test");
-                adapter.notifyDataSetChanged();
+//                name.add(dataSnapshot.getValue().toString());
+//                name.add("test");
+//                adapter.notifyDataSetChanged();
             }
 
             @Override
