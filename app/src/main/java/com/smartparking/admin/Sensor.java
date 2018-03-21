@@ -5,24 +5,24 @@ package com.smartparking.admin;
  */
 
 public class Sensor {
-    private String id;
+    private int id;
     private String name;
     private int status;
 
     public Sensor() {
     }
 
-    public Sensor(String id, String name, int status) {
+    public Sensor(int id, String name, int status) {
         this.id = id;
         this.name = name;
         this.status = status;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
