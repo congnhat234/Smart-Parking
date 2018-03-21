@@ -1,10 +1,13 @@
 package com.smartparking.admin;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -28,10 +31,11 @@ public class MainActivity extends AppCompatActivity {
         simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                flags[i] = R.drawable.redcar;
+                createDialog();
                 customAdapter.notifyDataSetChanged();
             }
         });
+
 
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -97,5 +101,31 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+    private void createDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Parking");
+        builder.setMessage("AlertDialog");
+        builder.setIcon(R.drawable.redcar);
+
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                showToast("YES");
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+    }
+    public void showToast(String msg){
+        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
     }
 }
