@@ -1,7 +1,17 @@
 package com.smartparking.admin;
 
+
 import android.content.DialogInterface;
+import android.nfc.Tag;
+import android.nfc.TagLostException;
+import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
+import android.text.Html;
+import android.util.Log;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import android.support.v7.app.AlertDialog;
 
@@ -16,7 +26,6 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import android.widget.TextView;
-
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -38,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     final ArrayList<Sensor> listSensors = new ArrayList<>();
     String List[] = {"Slot 1", "Slot 2", "Slot 3","Slot 4"};
     int flags[] = {R.drawable.car, R.drawable.greencar, R.drawable.redcar, R.drawable.car};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -155,5 +165,6 @@ public class MainActivity extends AppCompatActivity {
     }
     public void showToast(String msg){
         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+
     }
 }
