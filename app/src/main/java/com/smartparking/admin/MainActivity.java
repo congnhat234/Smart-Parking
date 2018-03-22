@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference myRef = database.getReference().child("S");
+        final DatabaseReference myRef = database.getReference();
         for(int i=1; i<=4; i++){
             Sensor sensor = new Sensor(i,"Sensor " + i,0);
             myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
@@ -93,12 +93,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        System.out.println(listSensors.size());
-
-        for (Sensor s : listSensors){
-            System.out.println(s.getName() + "----");
-        }
-
         // Read from the database
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -138,17 +132,17 @@ public class MainActivity extends AppCompatActivity {
     }
     private void createDialog(){
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("Parking");
-        builder.setMessage("AlertDialog");
+        builder.setTitle("Đặt chỗ");
+        builder.setMessage("Bạn có muốn đặt trước chỗ này?");
         builder.setIcon(R.drawable.redcar);
 
-        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 showToast("YES");
             }
         });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.cancel();
