@@ -8,17 +8,35 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.smartparking.admin.MainActivity">
+
     <TextView
         android:id="@+id/mTextField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/sign_out"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:background="@color/colorPrimary"
+        android:text="@string/btn_sign_out"
+        android:textColor="@android:color/white"
+        android:textStyle="bold" />
     <ListView
         android:id="@+id/lv"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     </ListView>
-
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_below="@+id/btn_signup"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center|bottom"
+        android:layout_marginBottom="20dp"
+        android:visibility="gone" />
 
 </LinearLayout>
 
