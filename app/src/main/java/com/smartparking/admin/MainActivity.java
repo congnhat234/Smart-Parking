@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         simpleList = findViewById(R.id.lv);
-        mTextField = findViewById(R.id.mTextField);
+        //mTextField = findViewById(R.id.mTextField);
         final CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), List, flags);
         simpleList.setAdapter(customAdapter);
         simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                     }
 
                     public void onFinish() {
-                        mTextField.setText("done!");
+                        mTextField.setText("Đã đặt!");
                         Sensor sensor = new Sensor(i+1,"Sensor " + i+1,1);
                         myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
                     }

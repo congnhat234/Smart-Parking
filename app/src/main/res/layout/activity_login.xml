@@ -58,7 +58,7 @@
         android:layout_marginRight="25dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/roundborderbutton"
-        android:text="Log in"
+        android:text="Đăng nhập"
         android:textAllCaps="false"
         android:textColor="#ffffff"
         android:textSize="20sp"
