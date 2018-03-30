@@ -3,22 +3,17 @@ package com.smartparking.admin;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
-
-import android.support.v7.app.AlertDialog;
-
-import android.os.CountDownTimer;
-
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -103,22 +98,13 @@ public class MainActivity extends AppCompatActivity {
             Sensor sensor = bundle.getParcelable("sensor");
             myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
         } else {
-            for(int i=1; i<=3; i++){
-            Sensor sensor = new Sensor(i,"Sensor " + i,0, "");
-            myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
-            }
             Sensor sensor = new Sensor(4,"Sensor 4",1, "");
             myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
         }
 
         simpleList = findViewById(R.id.lv);
-<<<<<<< HEAD
         mTextField = findViewById(R.id.mTextField);
         customAdapter = new CustomAdapter(getApplicationContext(), List, flags);
-=======
-        //mTextField = findViewById(R.id.mTextField);
-        final CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), List, flags);
->>>>>>> Hoang
         simpleList.setAdapter(customAdapter);
         simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -131,21 +117,8 @@ public class MainActivity extends AppCompatActivity {
                     } else if(check_available[i] == false) {
                         showToast("Chỗ đã đặt, vui lòng chọn chỗ khác");
                     }
-
-<<<<<<< HEAD
                 }
 
-
-=======
-                    public void onFinish() {
-                        mTextField.setText("Đã đặt!");
-                        Sensor sensor = new Sensor(i+1,"Sensor " + i+1,1);
-                        myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
-                    }
-                }.start();
-                createDialog();
-                customAdapter.notifyDataSetChanged();
->>>>>>> Hoang
             }
         });
 
