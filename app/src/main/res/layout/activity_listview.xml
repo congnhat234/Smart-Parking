@@ -10,7 +10,6 @@
         android:layout_height="60dp"
         android:layout_gravity="center"
         android:src="@drawable/car" />
-
     <TextView
         android:id="@+id/textView"
         android:layout_width="fill_parent"
