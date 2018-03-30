@@ -16,9 +16,16 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+<<<<<<< HEAD
+        android:layout_marginLeft="20dp"
+        android:text="Slot 1"
+        android:textSize="30sp"
+        android:textColor="@color/bg_register"
+=======
         android:padding="@dimen/fab_margin"
         android:text="Slot 1"
         android:textSize="@dimen/sizechu"
         android:textColor="@color/input_login"
+>>>>>>> Hoang
         android:textStyle="bold"/>
 </LinearLayout>

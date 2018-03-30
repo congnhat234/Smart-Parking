@@ -8,6 +8,7 @@ public class Sensor {
     private int id;
     private String name;
     private int status;
+    private String username;
 
     public Sensor() {
     }
@@ -16,6 +17,13 @@ public class Sensor {
         this.id = id;
         this.name = name;
         this.status = status;
+    }
+
+    public Sensor(int id, String name, int status, String username) {
+        this.id = id;
+        this.name = name;
+        this.status = status;
+        this.username = username;
     }
 
     public int getId() {
@@ -40,5 +48,13 @@ public class Sensor {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
