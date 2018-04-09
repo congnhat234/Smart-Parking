@@ -7,18 +7,17 @@
     tools:context=".CountdownTimerToOpen"
     android:orientation="vertical"
     android:background="@color/background"
-
     android:gravity="center">
 
     <TextView
         android:id="@+id/mTextField"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="30dp"
         android:gravity="center"
         android:textStyle="bold"
         android:text="Timer"
-        android:textSize="20sp"
+        android:textSize="40sp"
         android:textColor="@color/input_login"
         android:textColorHighlight="@color/bg_register"/>
     <Button

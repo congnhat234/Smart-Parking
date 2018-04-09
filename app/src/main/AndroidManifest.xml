@@ -21,7 +21,8 @@
         <activity android:name=".SignupActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".ResetPasswordActivity" />
-        <activity android:name=".CountdownTimerToOpen"></activity>
+        <activity android:name=".CountdownTimerToOpen" />
+        <activity android:name=".Registration"></activity>
     </application>
 
 </manifest>
