@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/background"
+    android:orientation="vertical"
     tools:context=".Registration">
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="250dp"
-        android:background="@drawable/parklot"/>
+        android:background="@drawable/parklot" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -55,9 +55,7 @@
                 android:layout_width="@dimen/logo_w_h"
                 android:layout_height="wrap_content"
                 android:background="@drawable/roundbordertext"
-                android:gravity="center"
-                >
-            </Spinner>
+                android:gravity="center"></Spinner>
         </TableRow>
 
         <TableRow
@@ -77,9 +75,7 @@
                 android:layout_width="@dimen/logo_w_h"
                 android:layout_height="wrap_content"
                 android:background="@drawable/roundbordertext"
-                android:gravity="center"
-                >
-            </Spinner>
+                android:gravity="center"></Spinner>
         </TableRow>
 
     </TableLayout>
@@ -88,11 +84,11 @@
         android:id="@+id/btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/fab_margin"
         android:layout_gravity="center"
+        android:layout_margin="@dimen/fab_margin"
         android:background="@drawable/roundborderbutton"
         android:onClick="Next"
         android:text="Đăng kí đỗ xe"
-        android:textColor="@color/white"/>
+        android:textColor="@color/white" />
 
 </LinearLayout>

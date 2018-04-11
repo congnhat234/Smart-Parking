@@ -61,12 +61,10 @@ public class ResetPasswordActivity extends AppCompatActivity {
                                 } else {
                                     Toast.makeText(ResetPasswordActivity.this, "Không thể gửi email!", Toast.LENGTH_SHORT).show();
                                 }
-
                                 progressBar.setVisibility(View.GONE);
                             }
                         });
             }
         });
     }
-
 }

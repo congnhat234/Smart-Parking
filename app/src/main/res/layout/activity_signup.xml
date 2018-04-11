@@ -22,32 +22,33 @@
             android:layout_marginTop="@dimen/fab_margin"
             android:src="@drawable/parking" />
 
-            <EditText
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/edt"
-                android:background="@drawable/roundbordertext"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@color/input_login"
-                android:paddingLeft="16dp"/>
+        <EditText
+            android:id="@+id/email"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edt"
+            android:background="@drawable/roundbordertext"
+            android:hint="@string/email"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:paddingLeft="16dp"
+            android:singleLine="true"
+            android:textColor="@color/input_login" />
 
-            <EditText
-                android:id="@+id/password"
-                android:layout_width="match_parent"
-                android:layout_marginTop="@dimen/fab_margin"
-                android:layout_height="@dimen/edt"
-                android:focusableInTouchMode="true"
-                android:hint="@string/hint_password"
-                android:background="@drawable/roundbordertext"
-                android:imeOptions="actionUnspecified"
-                android:inputType="textPassword"
-                android:paddingLeft="16dp"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:textColor="@color/input_login" />
+        <EditText
+            android:id="@+id/password"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/edt"
+            android:layout_marginTop="@dimen/fab_margin"
+            android:background="@drawable/roundbordertext"
+            android:focusableInTouchMode="true"
+            android:hint="@string/hint_password"
+            android:imeOptions="actionUnspecified"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:paddingLeft="16dp"
+            android:singleLine="true"
+            android:textColor="@color/input_login" />
+
         <Button
             android:id="@+id/sign_up_button"
             style="?android:textAppearanceSmall"
@@ -56,10 +57,10 @@
             android:layout_marginTop="30dp"
             android:background="@drawable/roundborderbutton"
             android:text="@string/action_sign_in_short"
-            android:textColor="#ffffff"
             android:textAllCaps="false"
-            android:textStyle="bold"
-            android:textSize="@dimen/sizechu"/>
+            android:textColor="#ffffff"
+            android:textSize="@dimen/sizechu"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btn_reset_password"

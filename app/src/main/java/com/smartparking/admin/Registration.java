@@ -15,11 +15,12 @@ public class Registration extends AppCompatActivity {
     EditText edt1;
     Button btnnext;
 
-    private Spinner spinner1,spinner2;
+    private Spinner spinner1, spinner2;
     private String[] Loaixe;
     private ArrayAdapter<String> spinnerAdapter;
     private String[] Gio;
     private ArrayAdapter<String> spinnerAdapter2;
+    int id_sensor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +30,8 @@ public class Registration extends AppCompatActivity {
         edt1 = findViewById(R.id.edt1);
         btnnext = findViewById(R.id.btn);
 
+        Bundle b = getIntent().getExtras();
+        id_sensor = b.getInt("id_sensor");
 
         spinner1 = (Spinner) findViewById(R.id.spinner1);
         Loaixe = getResources().getStringArray(R.array.Xe);
@@ -40,6 +43,7 @@ public class Registration extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -56,6 +60,7 @@ public class Registration extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
@@ -63,13 +68,16 @@ public class Registration extends AppCompatActivity {
         });
 
     }
+
     public void Next(View view) {
         if (edt1.getText().toString().isEmpty()) {
             Toast.makeText(getApplicationContext(), "Nhập biển số xe!", Toast.LENGTH_SHORT).show();
         } else {
             Intent intent = new Intent(Registration.this, CountdownTimerToOpen.class);
+            Bundle bundle = new Bundle();
+            bundle.putInt("id_sensor", id_sensor);
+            intent.putExtras(bundle);
             startActivity(intent);
         }
-
     }
 }
