@@ -38,9 +38,8 @@ public class MainActivity extends AppCompatActivity {
     CustomAdapter customAdapter;
     boolean check_booked = false;
     boolean check_available[] = {true, true, true, true};
-    boolean check_click = false;
     final ArrayList<Sensor> listSensors = new ArrayList<>();
-    String List[] = {"Slot 1", "Slot 2", "Slot 3","Slot 4"};
+    String List[] = {"Slot 1", "Slot 2", "Slot 3", "Slot 4"};
     int flags[] = {R.drawable.car, R.drawable.greencar, R.drawable.redcar, R.drawable.car};
 
     @Override
@@ -69,18 +68,14 @@ public class MainActivity extends AppCompatActivity {
 
         // Write a message to the database
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef = database.getReference();
-        Sensor sensor4 = new Sensor(4,"Sensor 4",1, "");
+        myRef = database.getReference("sensors");
+        Sensor sensor4 = new Sensor(4, "Sensor 4", "0", "");
         myRef.child(String.valueOf(sensor4.getId())).setValue(sensor4);
 
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Iterable<DataSnapshot> children = dataSnapshot.getChildren();
-                for (DataSnapshot child : children){
-                    Sensor sensor = child.getValue(Sensor.class);
-                    listSensors.add(sensor);
-                }
+
             }
 
             @Override
@@ -89,19 +84,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if (bundle != null) {
-            int id_sensor = bundle.getInt("id_sensor", 0);
-            check_booked = bundle.getBoolean("check_booked");
-            check_available[id_sensor-1] = bundle.getBoolean("check_available");
-            Sensor sensor = bundle.getParcelable("sensor");
-            myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
-        } else {
-            Sensor sensor = new Sensor(4,"Sensor 4",1, "");
-            myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
-        }
-
         simpleList = findViewById(R.id.lv);
         mTextField = findViewById(R.id.mTextField);
         customAdapter = new CustomAdapter(getApplicationContext(), List, flags);
@@ -109,16 +91,15 @@ public class MainActivity extends AppCompatActivity {
         simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-                if(check_booked == false && check_available[i] == true){
+                if (check_booked == false && check_available[i] == true) {
                     createDialog(i);
                 } else {
-                    if (check_booked == true){
+                    if (check_booked == true && check_available[i] == true) {
                         showToast("Bạn chỉ được đặt 1 chỗ");
-                    } else if(check_available[i] == false) {
+                    } else if (check_available[i] == false) {
                         showToast("Chỗ đã đặt, vui lòng chọn chỗ khác");
                     }
                 }
-
             }
         });
 
@@ -127,20 +108,35 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Sensor a = dataSnapshot.getValue(Sensor.class);
-                String user = auth.getCurrentUser().toString();
-                if(a.getStatus()==0){
-                    flags[a.getId()-1] = R.drawable.greencar;
-                    check_available[a.getId()-1] = true;
+                String user = auth.getCurrentUser().getEmail();
+
+                if(a.getStatus().equals("0")) {
+                    if(a.getUsername().equals("")){
+                        flags[a.getId() - 1] = R.drawable.greencar;
+                        check_available[a.getId() - 1] = true;
+                    } else {
+                        if(a.getUsername().equals(user)){
+                            flags[a.getId() - 1] = R.drawable.car;
+                            check_available[a.getId() - 1] = false;
+                        } else {
+                            flags[a.getId() - 1] = R.drawable.redcar;
+                            check_available[a.getId() - 1] = false;
+                        }
+                    }
+                } else {
+                    if(a.getUsername().equals("")){
+                        flags[a.getId() - 1] = R.drawable.redcar;
+                        check_available[a.getId() - 1] = false;
+                    } else {
+                        if(a.getUsername().equals(user)){
+                            flags[a.getId() - 1] = R.drawable.car;
+                            check_available[a.getId() - 1] = false;
+                        } else {
+                            flags[a.getId() - 1] = R.drawable.redcar;
+                            check_available[a.getId() - 1] = false;
+                        }
+                    }
                 }
-                else if(a.getStatus()==1 && !user.equals(a.getUsername())){
-                    flags[a.getId()-1] = R.drawable.redcar;
-                    check_available[a.getId()-1] = false;
-                }
-                else {
-                    flags[a.getId()-1] = R.drawable.car;
-                    check_available[a.getId()-1] = false;
-                }
-                if(a.getUsername().equals("")) check_booked = false;
                 customAdapter.notifyDataSetChanged();
             }
 
@@ -148,19 +144,34 @@ public class MainActivity extends AppCompatActivity {
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Sensor a = dataSnapshot.getValue(Sensor.class);
                 String user = auth.getCurrentUser().getEmail();
-                if(a.getStatus()==0){
-                    flags[a.getId()-1] = R.drawable.greencar;
-                    check_available[a.getId()-1] = true;
+
+                if(a.getStatus().equals("0")) {
+                    if(a.getUsername().equals("")){
+                        flags[a.getId() - 1] = R.drawable.greencar;
+                        check_available[a.getId() - 1] = true;
+                    } else {
+                        if(a.getUsername().equals(user)){
+                            flags[a.getId() - 1] = R.drawable.car;
+                            check_available[a.getId() - 1] = false;
+                        } else {
+                            flags[a.getId() - 1] = R.drawable.redcar;
+                            check_available[a.getId() - 1] = false;
+                        }
+                    }
+                } else {
+                    if(a.getUsername().equals("")){
+                        flags[a.getId() - 1] = R.drawable.redcar;
+                        check_available[a.getId() - 1] = false;
+                    } else {
+                        if(a.getUsername().equals(user)){
+                            flags[a.getId() - 1] = R.drawable.car;
+                            check_available[a.getId() - 1] = false;
+                        } else {
+                            flags[a.getId() - 1] = R.drawable.redcar;
+                            check_available[a.getId() - 1] = false;
+                        }
+                    }
                 }
-                else if(a.getStatus()==1 && !user.equals(a.getUsername())){
-                    flags[a.getId()-1] = R.drawable.redcar;
-                    check_available[a.getId()-1] = false;
-                }
-                else {
-                    flags[a.getId()-1] = R.drawable.car;
-                    check_available[a.getId()-1] = false;
-                }
-                if(a.getUsername().equals("")) check_booked = false;
                 customAdapter.notifyDataSetChanged();
             }
 
@@ -187,10 +198,12 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
     //sign out method
     public void signOut() {
         auth.signOut();
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -211,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void createDialog(final int j){
+    private void createDialog(final int j) {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("Đặt chỗ");
         builder.setMessage("Bạn có muốn đặt trước chỗ này?");
@@ -222,18 +235,15 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, final int i) {
                 FirebaseUser user = auth.getCurrentUser();
                 String userStr = user.getEmail();
-                Sensor sensor = new Sensor((j+1),"Sensor " + (j+1),1, userStr);
+                Sensor sensor = new Sensor((j + 1), "Sensor " + (j + 1), "0", userStr);
                 List[j] = "Your car";
                 myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
                 customAdapter.notifyDataSetChanged();
-                Intent intent = new Intent(MainActivity.this, CountdownTimerToOpen.class);
+                Intent intent = new Intent(MainActivity.this, Registration.class);
                 Bundle bundle = new Bundle();
-                bundle.putInt("id_sensor", (j+1));                      // Truyền một Int
+                bundle.putInt("id_sensor", (j + 1));
                 intent.putExtras(bundle);
                 startActivity(intent);
-
-
-
                 showToast("YES");
             }
         });
@@ -248,7 +258,8 @@ public class MainActivity extends AppCompatActivity {
         alertDialog.setCanceledOnTouchOutside(false);
         alertDialog.show();
     }
-    public void showToast(String msg){
+
+    public void showToast(String msg) {
         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
     }
 }

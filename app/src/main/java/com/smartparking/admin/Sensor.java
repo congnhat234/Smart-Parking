@@ -7,19 +7,19 @@ package com.smartparking.admin;
 public class Sensor {
     private int id;
     private String name;
-    private int status;
+    private String status;
     private String username;
 
     public Sensor() {
     }
 
-    public Sensor(int id, String name, int status) {
+    public Sensor(int id, String name, String status) {
         this.id = id;
         this.name = name;
         this.status = status;
     }
 
-    public Sensor(int id, String name, int status, String username) {
+    public Sensor(int id, String name, String status, String username) {
         this.id = id;
         this.name = name;
         this.status = status;
@@ -42,11 +42,11 @@ public class Sensor {
         this.name = name;
     }
 
-    public int getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
@@ -57,4 +57,5 @@ public class Sensor {
     public void setUsername(String username) {
         this.username = username;
     }
+
 }
