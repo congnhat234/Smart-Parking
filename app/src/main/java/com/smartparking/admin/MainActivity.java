@@ -89,18 +89,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Intent intent = getIntent();
-        Bundle bundle = intent.getExtras();
-        if (bundle != null) {
-            int id_sensor = bundle.getInt("id_sensor", 0);
-            check_booked = bundle.getBoolean("check_booked");
-            check_available[id_sensor-1] = bundle.getBoolean("check_available");
-            Sensor sensor = bundle.getParcelable("sensor");
-            myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
-        } else {
-            Sensor sensor = new Sensor(4,"Sensor 4",1, "");
-            myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
-        }
+
+        Sensor sensor = new Sensor(4,"Sensor 4",1, "");
+        myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
+
 
         simpleList = findViewById(R.id.lv);
         mTextField = findViewById(R.id.mTextField);

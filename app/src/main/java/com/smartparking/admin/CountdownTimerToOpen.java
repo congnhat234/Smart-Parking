@@ -45,21 +45,13 @@ public class CountdownTimerToOpen extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 countDownTimer.cancel();
+                mTextField.setText("Xin chào!");
                 FirebaseUser user = auth.getCurrentUser();
                 String userStr = user.getEmail();
                 check_booked = true;
                 check_available = false;
                 Sensor sensor = new Sensor(id_sensor,"Sensor " + id_sensor,1,userStr);
-                //myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
-                Intent intent = new Intent(CountdownTimerToOpen.this, MainActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putBoolean("check_booked", check_booked);
-                bundle.putBoolean("check_available", check_available);
-                bundle.putInt("id_sensor", id_sensor);
-                bundle.putParcelable("sensor", (Parcelable) sensor);
-                intent.putExtras(bundle);
-                startActivity(intent);
-
+                myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
             }
         });
 
