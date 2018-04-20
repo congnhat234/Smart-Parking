@@ -1,11 +1,12 @@
 package com.smartparking.admin;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -14,40 +15,51 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.ByteMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 public class CountdownTimerToOpen extends AppCompatActivity {
     DatabaseReference myRef;
     FirebaseAuth auth;
     CountDownTimer countDownTimer;
     TextView mTextField;
-    Button btn_open;
     int id_sensor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_countdown_timer);
+        QRCodeWriter writer = new QRCodeWriter();
+        ImageView qr_code = findViewById(R.id.img);
+        try {
+            ByteMatrix bitMatrix = writer.encode("123456", BarcodeFormat.QR_CODE, 512, 512);
+            int width = 512;
+            int height = 512;
+            Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    if (bitMatrix.get(x, y)==0)
+                        bmp.setPixel(x, y, Color.BLACK);
+                    else
+                        bmp.setPixel(x, y, Color.WHITE);
+                }
+            }
+            qr_code.setImageBitmap(bmp);
+        } catch (WriterException e) {
+            //Log.e("QR ERROR", ""+e);
+
+        }
 
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         myRef = database.getReference("sensors");
         mTextField = findViewById(R.id.mTextField);
-        btn_open = findViewById(R.id.btn_open);
 
         Bundle b = getIntent().getExtras();
         id_sensor = b.getInt("id_sensor");
 
         System.out.println(id_sensor);
-        btn_open.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                countDownTimer.cancel();
-
-                mTextField.setText("Chao ban!");
-                Intent intent = new Intent(CountdownTimerToOpen.this, MainActivity.class);
-                startActivity(intent);
-
-            }
-        });
 
         // Read from the database
         myRef.addChildEventListener(new ChildEventListener() {
@@ -84,11 +96,11 @@ public class CountdownTimerToOpen extends AppCompatActivity {
 
         countDownTimer = new CountDownTimer(30000, 1000) {
             public void onTick(long millisUntilFinished) {
-                mTextField.setText("seconds remaining: " + millisUntilFinished / 1000);
+                mTextField.setText("Bạn phải đến bãi đỗ xe trong: " + millisUntilFinished / 1000 + "s nữa!");
             }
 
             public void onFinish() {
-                mTextField.setText("Time up!");
+                mTextField.setText("Hết thời gian!");
 
                 Intent intent = new Intent(CountdownTimerToOpen.this, MainActivity.class);
 

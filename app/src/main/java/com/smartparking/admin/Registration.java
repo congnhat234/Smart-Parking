@@ -11,9 +11,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class Registration extends AppCompatActivity {
     EditText edt1;
     Button btnnext;
+    DatabaseReference myRef;
 
     private Spinner spinner1, spinner2;
     private String[] Loaixe;
@@ -21,21 +25,28 @@ public class Registration extends AppCompatActivity {
     private String[] Gio;
     private ArrayAdapter<String> spinnerAdapter2;
     int id_sensor;
+    Sensor sensor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("sensors");
+
         edt1 = findViewById(R.id.edt1);
         btnnext = findViewById(R.id.btn);
 
-        Bundle b = getIntent().getExtras();
+        Intent i = getIntent();
+        Bundle b = i.getExtras();
         id_sensor = b.getInt("id_sensor");
+        sensor = (Sensor) i.getSerializableExtra("sensor_obj");
+        System.out.println(sensor.getUsername());
 
-        spinner1 = (Spinner) findViewById(R.id.spinner1);
+        spinner1 = findViewById(R.id.spinner1);
         Loaixe = getResources().getStringArray(R.array.Xe);
-        spinnerAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, Loaixe);
+        spinnerAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, Loaixe);
         spinnerAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         spinner1.setAdapter(spinnerAdapter);
         spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -77,6 +88,7 @@ public class Registration extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putInt("id_sensor", id_sensor);
             intent.putExtras(bundle);
+            myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
             startActivity(intent);
         }
     }

@@ -24,9 +24,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
-
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     ProgressBar progressBar;
@@ -38,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     CustomAdapter customAdapter;
     boolean check_booked = false;
     boolean check_available[] = {true, true, true, true};
-    final ArrayList<Sensor> listSensors = new ArrayList<>();
     String List[] = {"Slot 1", "Slot 2", "Slot 3", "Slot 4"};
     int flags[] = {R.drawable.car, R.drawable.greencar, R.drawable.redcar, R.drawable.car};
 
@@ -83,7 +79,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
         simpleList = findViewById(R.id.lv);
         mTextField = findViewById(R.id.mTextField);
         customAdapter = new CustomAdapter(getApplicationContext(), List, flags);
@@ -236,15 +231,14 @@ public class MainActivity extends AppCompatActivity {
                 FirebaseUser user = auth.getCurrentUser();
                 String userStr = user.getEmail();
                 Sensor sensor = new Sensor((j + 1), "Sensor " + (j + 1), "0", userStr);
-                List[j] = "Your car";
-                myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
-                customAdapter.notifyDataSetChanged();
+                //myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
+                //customAdapter.notifyDataSetChanged();
                 Intent intent = new Intent(MainActivity.this, Registration.class);
                 Bundle bundle = new Bundle();
                 bundle.putInt("id_sensor", (j + 1));
+                intent.putExtra("sensor_obj", sensor);
                 intent.putExtras(bundle);
                 startActivity(intent);
-                showToast("YES");
             }
         });
         builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {

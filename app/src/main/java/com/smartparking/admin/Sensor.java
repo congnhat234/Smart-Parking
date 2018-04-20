@@ -1,10 +1,12 @@
 package com.smartparking.admin;
 
+import java.io.Serializable;
+
 /**
  * Created by ADMIN on 3/19/2018.
  */
 
-public class Sensor {
+public class Sensor implements Serializable {
     private int id;
     private String name;
     private String status;
