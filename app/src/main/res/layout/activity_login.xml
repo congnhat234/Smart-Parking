@@ -4,23 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#8DEEEE"
+    android:background="@color/background"
     android:orientation="vertical"
     tools:context="com.smartparking.admin.LoginActivity">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:layout_marginLeft="25dp"
-        android:layout_marginRight="25dp"
-        android:layout_marginTop="30dp"
-        android:text="SMART-PARKING"
-        android:paddingLeft="50dp"
-        android:textSize="30sp"
-        android:textColor="#000000"
-        android:textStyle="bold"
-        />
+    <ImageView
+        android:layout_width="@dimen/logo_w_h"
+        android:layout_height="@dimen/logo_w_h"
+        android:layout_centerHorizontal="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="25dp"
+        android:src="@drawable/park" />
 
     <EditText
         android:id="@+id/email"
@@ -29,11 +24,12 @@
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="180dp"
         android:background="@drawable/roundbordertext"
         android:hint="Email"
         android:padding="10dp"
         android:textColor="#000000" />
+
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
@@ -42,7 +38,7 @@
         android:layout_marginBottom="15dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="10dp"
         android:background="@drawable/roundbordertext"
         android:hint="Password"
         android:inputType="textPassword"
@@ -58,17 +54,18 @@
         android:layout_marginRight="25dp"
         android:layout_marginTop="15dp"
         android:background="@drawable/roundborderbutton"
-        android:text="Log in"
+        android:text="Đăng nhập"
         android:textAllCaps="false"
         android:textColor="#ffffff"
         android:textSize="20sp"
         android:textStyle="bold" />
+
     <Button
         android:id="@+id/btn_reset_password"
-        android:layout_below="@+id/btn_login"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dip"
+        android:layout_below="@+id/btn_login"
+        android:layout_marginTop="110dp"
         android:background="@null"
         android:text="@string/btn_forgot_password"
         android:textAllCaps="false"
@@ -76,23 +73,22 @@
 
     <Button
         android:id="@+id/btn_signup"
-        android:layout_below="@+id/btn_reset_password"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dip"
+        android:layout_below="@+id/btn_reset_password"
         android:background="@null"
         android:text="@string/btn_link_to_register"
         android:textAllCaps="false"
         android:textColor="#000000"
         android:textSize="15dp" />
+
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_below="@+id/btn_signup"
         android:layout_width="30dp"
         android:layout_height="30dp"
+        android:layout_below="@+id/btn_signup"
         android:layout_gravity="center|bottom"
         android:layout_marginBottom="20dp"
         android:visibility="gone" />
-
 </RelativeLayout>
 

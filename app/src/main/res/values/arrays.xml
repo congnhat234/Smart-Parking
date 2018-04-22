@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="Xe">
+        <item>Xe 4 chỗ</item>
+        <item>Xe 7 chỗ</item>
+        <item>Xe 16 chỗ</item>
+    </string-array>
+
+    <string-array name="Gio">
+        <item>1 giờ</item>
+        <item>2 giờ</item>
+        <item>3 giờ</item>
+        <item>4 giờ</item>
+    </string-array>
+</resources>
