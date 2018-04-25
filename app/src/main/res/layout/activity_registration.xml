@@ -66,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/fab_margin"
-                android:text="Giờ vào: "
+                android:text="Giờ đăng kí: "
                 android:textColor="@color/input_login"
                 android:textSize="@dimen/sizechu" />
             <TextView

@@ -7,7 +7,6 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
@@ -30,13 +29,16 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
     ProgressBar progressBar;
     FirebaseAuth.AuthStateListener authListener;
     ListView simpleList;
     TextView mTextField;
-    Button signOut;
+    Button signOut, thanhtoan;
     DatabaseReference myRef;
     DatabaseReference myRefWarning;
     CustomAdapter customAdapter;
@@ -94,6 +96,17 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        thanhtoan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar c = Calendar.getInstance();
+                SimpleDateFormat dateformat = new SimpleDateFormat("HH:mm");
+                String giora = dateformat.format(c.getTime());
+                String[] str = giora.split(":");
+                int minute = Integer.parseInt(str[0])*60 + Integer.parseInt(str[1]);
+            }
+        });
+
         // Read from the database
         myRef.addChildEventListener(new ChildEventListener() {
             @Override
@@ -109,6 +122,7 @@ public class MainActivity extends AppCompatActivity {
                             if(a.getUsername().equals(user)){
                                 flags[a.getId() - 1] = R.drawable.car;
                                 check_available[a.getId() - 1] = false;
+                                thanhtoan.setVisibility(View.VISIBLE);
                             } else {
                                 flags[a.getId() - 1] = R.drawable.redcar;
                                 check_available[a.getId() - 1] = false;
@@ -122,6 +136,7 @@ public class MainActivity extends AppCompatActivity {
                             if(a.getUsername().equals(user)){
                                 flags[a.getId() - 1] = R.drawable.car;
                                 check_available[a.getId() - 1] = false;
+                                thanhtoan.setVisibility(View.VISIBLE);
                             } else {
                                 flags[a.getId() - 1] = R.drawable.redcar;
                                 check_available[a.getId() - 1] = false;
@@ -136,7 +151,7 @@ public class MainActivity extends AppCompatActivity {
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Sensor a = dataSnapshot.getValue(Sensor.class);
                 String user = auth.getCurrentUser().getEmail();
-
+                thanhtoan.setVisibility(View.INVISIBLE);
                 if(a.getStatus().equals("0")) {
                     if(a.getUsername().equals("")){
                         flags[a.getId() - 1] = R.drawable.greencar;
@@ -145,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                         if(a.getUsername().equals(user)){
                             flags[a.getId() - 1] = R.drawable.car;
                             check_available[a.getId() - 1] = false;
+                            thanhtoan.setVisibility(View.VISIBLE);
                         } else {
                             flags[a.getId() - 1] = R.drawable.redcar;
                             check_available[a.getId() - 1] = false;
@@ -158,6 +174,7 @@ public class MainActivity extends AppCompatActivity {
                         if(a.getUsername().equals(user)){
                             flags[a.getId() - 1] = R.drawable.car;
                             check_available[a.getId() - 1] = false;
+                            thanhtoan.setVisibility(View.VISIBLE);
                         } else {
                             flags[a.getId() - 1] = R.drawable.redcar;
                             check_available[a.getId() - 1] = false;
@@ -225,6 +242,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void init(){
         signOut = findViewById(R.id.sign_out);
+        thanhtoan = findViewById(R.id.thanhtoan);
         progressBar = findViewById(R.id.progressBar);
         simpleList = findViewById(R.id.lv);
         mTextField = findViewById(R.id.mTextField);
