@@ -17,7 +17,7 @@ public abstract class SingleFragment extends AppCompatActivity {
         Fragment fragment = faManager.findFragmentById(R.id.fragment_content);
         if(fragment == null) {
             fragment = createFragment();
-            faManager.beginTransaction();  
+            faManager.beginTransaction();
         }
     }
 }
