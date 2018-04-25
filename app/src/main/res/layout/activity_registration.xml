@@ -66,16 +66,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/fab_margin"
-                android:text="Số giờ đặt: "
+                android:text="Giờ vào: "
                 android:textColor="@color/input_login"
                 android:textSize="@dimen/sizechu" />
-
-            <Spinner
-                android:id="@+id/spinner2"
-                android:layout_width="@dimen/logo_w_h"
+            <TextView
+                android:id="@+id/tv"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/roundbordertext"
-                android:gravity="center"></Spinner>
+                android:padding="@dimen/fab_margin"
+                android:text=""
+                android:textColor="@color/input_login"
+                android:textSize="@dimen/sizechu"/>
+
         </TableRow>
 
     </TableLayout>
