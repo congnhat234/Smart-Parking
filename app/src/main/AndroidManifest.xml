@@ -23,6 +23,7 @@
         <activity android:name=".ResetPasswordActivity" />
         <activity android:name=".CountdownTimerToOpen" />
         <activity android:name=".Registration"></activity>
+        <activity android:name=".Fragment1" />
     </application>
 
 </manifest>
