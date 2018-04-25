@@ -1,10 +1,17 @@
 package com.smartparking.admin;
 
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -22,7 +29,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
     FirebaseAuth auth;
@@ -32,9 +38,11 @@ public class MainActivity extends AppCompatActivity {
     TextView mTextField;
     Button signOut;
     DatabaseReference myRef;
+    DatabaseReference myRefWarning;
     CustomAdapter customAdapter;
     boolean check_booked = false;
     boolean check_available[] = {true, true, true, true};
+    boolean warning_fire = false;
     String List[] = {"Slot 1", "Slot 2", "Slot 3", "Slot 4"};
     int flags[] = {R.drawable.car, R.drawable.greencar, R.drawable.redcar, R.drawable.car};
 
@@ -43,9 +51,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        signOut = findViewById(R.id.sign_out);
-        progressBar = findViewById(R.id.progressBar);
-
+        init();
         //get firebase auth instance
         auth = FirebaseAuth.getInstance();
 
@@ -62,39 +68,29 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("sensors");
-        Sensor sensor4 = new Sensor(4, "Sensor 4", "0", "");
-        myRef.child(String.valueOf(sensor4.getId())).setValue(sensor4);
-
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-        simpleList = findViewById(R.id.lv);
-        mTextField = findViewById(R.id.mTextField);
-        customAdapter = new CustomAdapter(getApplicationContext(), List, flags);
-        simpleList.setAdapter(customAdapter);
         simpleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, final int i, long l) {
-                if (check_booked == false && check_available[i] == true) {
-                    createDialog(i);
-                } else {
-                    if (check_booked == true && check_available[i] == true) {
-                        showToast("Bạn chỉ được đặt 1 chỗ");
-                    } else if (check_available[i] == false) {
-                        showToast("Chỗ đã đặt, vui lòng chọn chỗ khác");
+                if(warning_fire == false){
+                    if (check_booked == false && check_available[i] == true) {
+                        createDialog(i);
+                    } else {
+                        if (check_booked == true && check_available[i] == true) {
+                            showToast("Bạn chỉ được đặt 1 chỗ");
+                        } else if (check_available[i] == false) {
+                            showToast("Chỗ đã đặt, vui lòng chọn chỗ khác");
+                        }
                     }
+                } else {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setTitle("Cảnh báo");
+                    builder.setMessage("Bãi đỗ xe đang gặp sự cố!");
+                    builder.setIcon(R.drawable.redcar);
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.setCanceledOnTouchOutside(true);
+                    alertDialog.show();
                 }
+
             }
         });
 
@@ -104,31 +100,32 @@ public class MainActivity extends AppCompatActivity {
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Sensor a = dataSnapshot.getValue(Sensor.class);
                 String user = auth.getCurrentUser().getEmail();
-
-                if(a.getStatus().equals("0")) {
-                    if(a.getUsername().equals("")){
-                        flags[a.getId() - 1] = R.drawable.greencar;
-                        check_available[a.getId() - 1] = true;
-                    } else {
-                        if(a.getUsername().equals(user)){
-                            flags[a.getId() - 1] = R.drawable.car;
-                            check_available[a.getId() - 1] = false;
+                if(a.getId()>0){
+                    if(a.getStatus().equals("0")) {
+                        if(a.getUsername().equals("")){
+                            flags[a.getId() - 1] = R.drawable.greencar;
+                            check_available[a.getId() - 1] = true;
                         } else {
-                            flags[a.getId() - 1] = R.drawable.redcar;
-                            check_available[a.getId() - 1] = false;
+                            if(a.getUsername().equals(user)){
+                                flags[a.getId() - 1] = R.drawable.car;
+                                check_available[a.getId() - 1] = false;
+                            } else {
+                                flags[a.getId() - 1] = R.drawable.redcar;
+                                check_available[a.getId() - 1] = false;
+                            }
                         }
-                    }
-                } else {
-                    if(a.getUsername().equals("")){
-                        flags[a.getId() - 1] = R.drawable.redcar;
-                        check_available[a.getId() - 1] = false;
                     } else {
-                        if(a.getUsername().equals(user)){
-                            flags[a.getId() - 1] = R.drawable.car;
-                            check_available[a.getId() - 1] = false;
-                        } else {
+                        if(a.getUsername().equals("")){
                             flags[a.getId() - 1] = R.drawable.redcar;
                             check_available[a.getId() - 1] = false;
+                        } else {
+                            if(a.getUsername().equals(user)){
+                                flags[a.getId() - 1] = R.drawable.car;
+                                check_available[a.getId() - 1] = false;
+                            } else {
+                                flags[a.getId() - 1] = R.drawable.redcar;
+                                check_available[a.getId() - 1] = false;
+                            }
                         }
                     }
                 }
@@ -185,6 +182,38 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+        myRefWarning.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                String fire = (String) dataSnapshot.getValue();
+                if(fire.equals("0")) {
+                    showNotify();
+                    warning_fire = true;
+                } else {
+                    warning_fire = false;
+                }
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,6 +221,22 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void init(){
+        signOut = findViewById(R.id.sign_out);
+        progressBar = findViewById(R.id.progressBar);
+        simpleList = findViewById(R.id.lv);
+        mTextField = findViewById(R.id.mTextField);
+        customAdapter = new CustomAdapter(getApplicationContext(), List, flags);
+        simpleList.setAdapter(customAdapter);
+
+        // Write a message to the database
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("sensors");
+        myRefWarning = database.getReference("warning");
+        Sensor sensor4 = new Sensor(4, "Slot 4", "1", "");
+        myRef.child(String.valueOf(sensor4.getId())).setValue(sensor4);
     }
 
     //sign out method
@@ -223,14 +268,14 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         builder.setTitle("Đặt chỗ");
         builder.setMessage("Bạn có muốn đặt trước chỗ này?");
-        builder.setIcon(R.drawable.redcar);
+        builder.setIcon(R.drawable.greencar);
 
         builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, final int i) {
                 FirebaseUser user = auth.getCurrentUser();
                 String userStr = user.getEmail();
-                Sensor sensor = new Sensor((j + 1), "Sensor " + (j + 1), "0", userStr);
+                Sensor sensor = new Sensor((j + 1), "Slot " + (j + 1), "0", userStr);
                 //myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
                 //customAdapter.notifyDataSetChanged();
                 Intent intent = new Intent(MainActivity.this, Registration.class);
@@ -256,4 +301,40 @@ public class MainActivity extends AppCompatActivity {
     public void showToast(String msg) {
         Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
     }
+
+    public void showNotify(){
+        System.out.println("warning");
+        NotificationCompat.Builder mBuilder =
+                new NotificationCompat.Builder(this)
+                        .setSmallIcon(R.drawable.redcar)
+                        .setContentTitle("Cánh báo")
+                        .setContentText("Bãi đỗ xe có cháy!")
+                        .setDefaults(Notification.DEFAULT_SOUND)
+                        .setDefaults(Notification.DEFAULT_VIBRATE);
+// Creates an explicit intent for an Activity in your app
+        Intent resultIntent = new Intent(this, LoginActivity.class);
+
+// The stack builder object will contain an artificial back stack for the
+// started Activity.
+// This ensures that navigating backward from the Activity leads out of
+// your application to the Home screen.
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+// Adds the back stack for the Intent (but not the Intent itself)
+        stackBuilder.addParentStack(LoginActivity.class);
+// Adds the Intent that starts the Activity to the top of the stack
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent =
+                stackBuilder.getPendingIntent(
+                        100,
+                        PendingIntent.FLAG_UPDATE_CURRENT
+                );
+        mBuilder.setContentIntent(resultPendingIntent);
+        NotificationManager mNotificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notification =  mBuilder.build();
+        notification.defaults |= Notification.DEFAULT_SOUND;
+        notification.defaults |= Notification.DEFAULT_VIBRATE;
+        mNotificationManager.notify(12345, notification);
+    }
+
 }
