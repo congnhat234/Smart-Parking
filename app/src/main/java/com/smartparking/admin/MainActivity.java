@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     ProgressBar progressBar;
     FirebaseAuth.AuthStateListener authListener;
     ListView simpleList;
-    TextView mTextField;
+    TextView mTextField, tv_tk;
     Button signOut, thanhtoan;
     DatabaseReference myRef;
     DatabaseReference myRefWarning;
@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     boolean warning_fire = false;
     String List[] = {"Slot 1", "Slot 2", "Slot 3", "Slot 4"};
     int flags[] = {R.drawable.car, R.drawable.greencar, R.drawable.redcar, R.drawable.car};
+    Booked booked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +104,13 @@ public class MainActivity extends AppCompatActivity {
                 SimpleDateFormat dateformat = new SimpleDateFormat("HH:mm");
                 String giora = dateformat.format(c.getTime());
                 String[] str = giora.split(":");
-                int minute = Integer.parseInt(str[0])*60 + Integer.parseInt(str[1]);
+                int timeout = Integer.parseInt(str[0])*60 + Integer.parseInt(str[1]);
+                Intent i = getIntent();
+                booked = (Booked) i.getSerializableExtra("booked_obj");
+                String[] str2 = booked.getGiovao().split(":");
+                int timein = Integer.parseInt(str2[0])*60 + Integer.parseInt(str2[1]);
+                int sotien = (timeout - timein)*100;
+                createDialog_Checkout(sotien);
             }
         });
 
@@ -246,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
         simpleList = findViewById(R.id.lv);
         mTextField = findViewById(R.id.mTextField);
+        tv_tk = findViewById(R.id.tv_tk);
         customAdapter = new CustomAdapter(getApplicationContext(), List, flags);
         simpleList.setAdapter(customAdapter);
 
@@ -302,6 +310,33 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("sensor_obj", sensor);
                 intent.putExtras(bundle);
                 startActivity(intent);
+            }
+        });
+        builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.show();
+    }
+    private void createDialog_Checkout(final int sotien) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle("Thanh toán");
+        builder.setMessage("Bạn có muốn thanh toán " + sotien + "đ ?");
+        builder.setIcon(R.drawable.greencar);
+
+        builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, final int i) {
+                FirebaseUser user = auth.getCurrentUser();
+                String userStr = user.getEmail();
+                tv_tk.setText("Số tiền trong TK: " + (100000 - sotien));
+                showToast("Bạn đã thanh toán " + sotien + "đ");
+                thanhtoan.setVisibility(View.INVISIBLE);
             }
         });
         builder.setNegativeButton("Không", new DialogInterface.OnClickListener() {

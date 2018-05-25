@@ -93,6 +93,9 @@ public class Registration extends AppCompatActivity {
             Bundle bundle = new Bundle();
             bundle.putInt("id_sensor", id_sensor);
             intent.putExtras(bundle);
+
+            intent.putExtra("booked_obj", booked);
+            intent.putExtras(bundle);
             myRef.child(String.valueOf(sensor.getId())).setValue(sensor);
             startActivity(intent);
         }

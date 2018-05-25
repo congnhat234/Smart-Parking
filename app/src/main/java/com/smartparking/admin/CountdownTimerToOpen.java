@@ -26,6 +26,7 @@ public class CountdownTimerToOpen extends AppCompatActivity {
     CountDownTimer countDownTimer;
     TextView mTextField;
     int id_sensor;
+    Booked booked;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,10 +57,10 @@ public class CountdownTimerToOpen extends AppCompatActivity {
         myRef = database.getReference("sensors");
         mTextField = findViewById(R.id.mTextField);
 
-        Bundle b = getIntent().getExtras();
+        Intent i = getIntent();
+        Bundle b = i.getExtras();
+        booked = (Booked) i.getSerializableExtra("booked_obj");
         id_sensor = b.getInt("id_sensor");
-
-        System.out.println(id_sensor);
 
         // Read from the database
         myRef.addChildEventListener(new ChildEventListener() {
@@ -74,6 +75,9 @@ public class CountdownTimerToOpen extends AppCompatActivity {
                 if(a.getId()==id_sensor && a.getStatus().equals("1")){
                     countDownTimer.cancel();
                     Intent intent = new Intent(CountdownTimerToOpen.this, MainActivity.class);
+                    Bundle bundle = new Bundle();
+                    intent.putExtra("booked_obj", booked);
+                    intent.putExtras(bundle);
                     startActivity(intent);
                 }
             }
@@ -96,7 +100,7 @@ public class CountdownTimerToOpen extends AppCompatActivity {
 
         countDownTimer = new CountDownTimer(30000, 1000) {
             public void onTick(long millisUntilFinished) {
-                mTextField.setText("Bạn phải đến bãi đỗ xe trong: " + millisUntilFinished / 1000 + "s nữa!");
+                mTextField.setText("Bạn phải đến bãi đỗ xe trong: " + millisUntilFinished / 1000 + " phút nữa!");
             }
 
             public void onFinish() {
